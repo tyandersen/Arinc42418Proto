@@ -1,0 +1,50 @@
+syntax = "proto2";
+
+// ARINV 424-18 compatible ProtocolMessages.
+
+import "LatLong.proto";
+import "Base.proto";
+
+message VHFNavaid { // 4.1.2.1 (D)
+  required Base base = 1;
+
+  // Note: Fields aren't in the same order as on the wire in ARINC 424-18 format
+  // Specifically, the VOR ident and ICAO codes are listed here first (as they
+  // are most relevant to VHFNavaid objects).
+  required string vor_ident = 2;
+  required string vor_icao_location_code = 3;
+  required string vor_navaid_name = 16;
+
+  // Optionally, VHFNavaids are co-located on an airport
+  message AssociatedAirport {
+    required string airport_ident = 1;
+    required string airport_icao_location_code = 2;
+  }
+
+  optional AssociatedAirport airport = 4;
+
+  required string vor_frequency = 5;
+
+  // TODO(tyler): Enumerate classes
+  optional string vor_class = 6;
+
+  optional LatLong vor_latlong = 7;
+
+  optional string dme_ident = 8;
+  optional LatLong dme_latlong = 9;
+  optional string station_declination = 10;
+  optional int32 dme_elevation = 11;
+
+  // Probably not used?
+  optional int32 figure_of_merit = 12;
+
+  // "Bias"
+  optional string dme_offset_nm = 13;
+
+  // Distance to the next navaid on the same frequency
+  // unfortunately, the FAA doesn't seem to use this field. :(
+  optional int32 frequency_protection_nm = 14;
+
+  required string datum_code = 15;
+
+}

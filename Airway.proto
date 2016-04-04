@@ -1,0 +1,70 @@
+syntax = "proto2";
+
+// ARINV 424-18 compatible ProtocolMessages.
+
+import "LatLong.proto";
+import "Base.proto";
+
+message Airway { // 4.1.6.1 (ER)
+  required Base base = 1;
+
+  // Note: Fields aren't in the same order as on the wire in ARINC 424-18 format
+  // Specifically, the VOR ident and ICAO codes are listed here first (as they
+  // are most relevant to VHFNavaid objects).
+  required string ident = 2;
+
+  enum AirwayType {
+    OFFICIAL_AIRWAY = 0;  // i.e. V101
+    RNAV_AIRWAY = 1;
+  }
+
+  required AirwayType airway_type = 3;
+
+  required bool is_high_altitude = 4;
+  required bool is_low_altitude = 5;
+
+  message AirwayFix {
+    required int32 sequence_number = 1;
+    required string ident = 2;
+    required string icao_location_code = 3;
+
+    enum FixType {
+      GPS_WAYPOINT = 0;  // "EA"
+      VOR = 1; // "D"
+      NDB = 2; // "DB"
+      // TODO: Complete this list.
+    }
+
+    required FixType type = 4;
+
+    message FixDescription {
+      // TODO: Enumerate this
+    }
+    optional FixDescription description = 5; // TODO: make this required
+
+    // Note: There is a bigger list of these in 5.18, but for the FAA, this is
+    // currently sufficient.
+    enum BoundaryCode {
+      CANADA = 0;
+      LATIN_AMERICA = 1;
+      PACIFIC = 2;
+    }
+
+    optional BoundaryCode boundary_code = 6;
+
+    // Is this only present for OFFICIAL_AIRWAY?
+    optional string outbound_magnetic_course = 7;
+    optional string inbound_magnetic_course = 8;
+
+    // Why is this not always present?
+    optional string route_distance_from = 9;
+
+    // Convert these to ONEOF { Flight Level / Altitude }
+    optional string minimum_altitude = 10;
+    optional string minimum_altitude_reverse = 11;
+    optional string maximum_altitude = 12;
+  }
+
+  repeated AirwayFix fix = 6;
+
+}

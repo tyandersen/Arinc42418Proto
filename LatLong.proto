@@ -1,0 +1,37 @@
+syntax = "proto2";
+
+
+message Latitude {
+  required bool is_north = 1;
+  required int32 degrees = 2;
+  required int32 minutes = 3;
+  required int32 seconds = 4;
+  required int32 seconds_hundredths = 5;
+}
+
+
+message Longitude {
+  required bool is_east = 1;
+  required int32 degrees = 2;
+  required int32 minutes = 3;
+  required int32 seconds = 4;
+  required int32 seconds_hundredths = 5;
+}
+
+
+message LatLong {
+  required Latitude latitude = 1;
+  required Longitude longitude = 2;
+}
+
+
+message MagneticVariation {
+  enum Direction {
+    EAST = 0;
+    WEST = 1;
+    TRUE = 2;
+  }
+
+  required Direction direction = 1;
+  required string amount = 2;  // measured to the tenths, not valid of direction is TRUE
+}

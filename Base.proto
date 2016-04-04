@@ -1,0 +1,22 @@
+syntax = "proto2";
+
+// Base things that seem to be in all the ARINC424-18 messages
+
+message Base {
+  // Record type is S/T (standard/tailored).
+  required bool record_type_is_standard = 1;
+
+  optional string customer_area = 2;
+
+  // Section and subsection could be listed here, as they are in all messages.
+  // However, this is for converting on-the-wire information and is duplicated
+  // by selection of which ProtocolMessage to use.
+
+  // Continuation record number could be listed here as well. The FAA doesn't
+  // (seem to) use continuation records, so it's omitted. If necessary,
+  // the "continued" form of data shall be added as a repeated message under
+  // the appropriate ProtocolMessage.
+
+  required string file_record_number = 3;
+  required string cycle = 4;
+}

@@ -1,0 +1,53 @@
+syntax = "proto2";
+
+// ARINV 424-18 compatible ProtocolMessages.
+
+import "LatLong.proto";
+import "Base.proto";
+
+message Waypoint { // 4.1.4.1 (EA)
+  required Base base = 1;
+
+  // Note: Fields aren't in the same order as on the wire in ARINC 424-18 format
+  // Specifically, the VOR ident and ICAO codes are listed here first (as they
+  // are most relevant to VHFNavaid objects).
+  required string ident = 2;
+  required string icao_location_code = 3;
+  required string description = 16;
+
+  // Optionally, VHFNavaids are co-located on an airport
+  // Consider changing this to oneof? (Or see if is_enroute_waypont is
+  // actually necessary?)
+  message AssociatedAirport {
+    required string airport_ident = 1;
+    required string airport_icao_location_code = 2;
+  }
+
+  optional AssociatedAirport airport = 18;
+  required bool is_enroute_waypoint = 17;
+
+  required string type = 4;
+
+  // TODO(tyler): Enumerate classes
+  message Usage {
+    required bool is_rnav = 1;
+    enum Altitude {
+      HIGH = 0;
+      LOW = 1;
+      HIGH_AND_LOW = 2;
+      TERMINAL_ONLY = 3;
+    }
+
+    required Altitude altitude = 2;
+  }
+  required Usage usage = 5;
+
+  optional LatLong latlong = 6;
+  required MagneticVariation variation = 7;
+
+  required string datum_code = 8;
+
+  // Doesn't seem to be used for the FAA?
+  optional string format_name_indicator = 9;
+
+}
