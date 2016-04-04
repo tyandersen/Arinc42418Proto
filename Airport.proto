@@ -1,0 +1,84 @@
+syntax = "proto2";
+
+// ARINV 424-18 compatible ProtocolMessages.
+
+import "LatLong.proto";
+import "Base.proto";
+
+message Runway { // 4.1.10.1 (PG)
+  // Skip base and airport, because this will be a sub-message of Airport
+  required string ident = 1;
+  required int32 length = 2;
+
+  required string bearing = 3; // tenths of a degree, string for accuracy // 5.58
+  required bool is_runway_bearing_true = 4;
+
+  required LatLong latlong = 5;
+  required string runway_gradient = 6; // +9.000 through -9.000; 5.212
+
+  // Couldn't figure out what the elipsoidal height is (5.225), more specifically,
+  // how it is distinguished from 5.68
+  required sint32 landing_threshold_height = 7;
+  required int32 displaced_threshold = 8;
+  required int32 threshold_crossing_height = 9; // see ThresholdCrossingCalculation
+
+  // Describes how the threshold_crossing_height is computed
+  enum ThresholdCrossingCalculation {
+    DEFAULT = 0;  // 50 ft
+    ILS_GLIDE_SLOPE = 1;
+    RNAV_PROCEDURE = 2;
+    VGSI = 3;  // visual glide slope
+  }  // 5.270
+  required ThresholdCrossingCalculation threshold_crossing_calculation = 11;
+
+  required int32 width = 10;
+
+  // Could be LOC, ILS, etc
+  optional string primary_localizer_ident = 12;
+  optional string secondary_localizer_ident = 13;
+
+  // Regarding the approach (class I, II, etc., LDA, SDF, etc.)
+  // Primary/secondary refers to the localizer idents (presumably!)
+  optional string primary_class_category = 14;  // 5.80
+  optional string secondary_class_category = 15;  // 5.80
+
+  // TODO: FAA does not report stopway length!
+  optional int32 stopway_length = 16;
+
+  // FAA doesn't use this.
+  optional string runway_description = 17;
+}
+
+
+message Airport { // 4.1.7.1 (ER)
+  required Base base = 1;
+
+  required string ident = 2;
+  required string name = 10;
+  required string icao_code = 3;
+
+  required string iata_ident = 4;
+
+  required bool ifr_capable = 5;
+
+  // TODO: Longest runway and Longest runway surface code?
+  // - probably not, because the runways will be part of this object
+  // (decide when adding/implementing Runway information)
+
+  required LatLong latlong = 6;
+  required MagneticVariation variation = 7;
+
+  required sint32 elevation = 8;
+
+  // Skipped: Transition Altitude and Transition Level. (for now, not in use by FAA)
+
+  enum UseRestrictions {
+    CIVIL = 0;  // Open to public
+    MILITARY = 1;
+    PRIVATE = 2;
+  }
+
+  required UseRestrictions use_restrictions = 9;
+
+  repeated Runway runway = 11;
+}

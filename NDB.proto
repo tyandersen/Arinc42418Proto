@@ -1,0 +1,36 @@
+syntax = "proto2";
+
+// ARINV 424-18 compatible ProtocolMessages.
+
+import "LatLong.proto";
+import "Base.proto";
+
+message NDB { // 4.1.3.1 (DB)  Also PN, but currently unimplemented
+  required Base base = 1;
+
+  // Note: Fields aren't in the same order as on the wire in ARINC 424-18 format
+  // Specifically, the NDB ident and ICAO codes are listed here first (as they
+  // are most relevant to VHFNavaid objects).
+  required string ndb_ident = 2;
+  required string ndb_icao_location_code = 3;
+  required string ndb_navaid_name = 10;
+
+  // Optionally, VHFNavaids are co-located on an airport
+  message AssociatedAirport {
+    required string airport_ident = 1;
+    required string airport_icao_location_code = 2;
+  }
+
+  optional AssociatedAirport airport = 4;
+
+  required string ndb_frequency = 5;
+
+  // TODO(tyler): Enumerate classes
+  optional string ndb_class = 6;
+
+  optional LatLong ndb_latlong = 7;
+  required MagneticVariation variation = 8;
+
+  required string datum_code = 9;
+
+}
