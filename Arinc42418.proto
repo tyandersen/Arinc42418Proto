@@ -1,0 +1,19 @@
+syntax = "proto2";
+
+// ARINV 424-18 compatible ProtocolMessages.
+// This is the container for all the other protocol messages in the project
+
+
+import "Waypoint.proto";
+import "NDB.proto";
+import "VHFNavaid.proto";
+import "Airway.proto";
+import "Airport.proto";
+
+message Arinc42418 {
+  repeated Airport airport = 1;
+  repeated Airway airway = 2;
+  repeated Waypoint waypoint = 3;
+  repeated NDB ndb = 4;
+  repeated VHFNavaid vhf_navaid = 5;
+}
