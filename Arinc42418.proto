@@ -3,6 +3,7 @@ syntax = "proto2";
 // ARINV 424-18 compatible ProtocolMessages.
 // This is the container for all the other protocol messages in the project
 
+package Arinc424;
 
 import "Waypoint.proto";
 import "NDB.proto";

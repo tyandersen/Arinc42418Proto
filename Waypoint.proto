@@ -2,6 +2,8 @@ syntax = "proto2";
 
 // ARINV 424-18 compatible ProtocolMessages.
 
+package Arinc424;
+
 import "LatLong.proto";
 import "Base.proto";
 
