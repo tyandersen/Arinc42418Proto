@@ -15,7 +15,7 @@ message Waypoint { // 4.1.4.1 (EA)
   // are most relevant to VHFNavaid objects).
   required string ident = 2;
   required string icao_location_code = 3;
-  required string description = 16;
+  required string waypoint_description = 16;
 
   // Optionally, VHFNavaids are co-located on an airport
   // Consider changing this to oneof? (Or see if is_enroute_waypont is
