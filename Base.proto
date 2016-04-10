@@ -2,6 +2,8 @@ syntax = "proto2";
 
 // Base things that seem to be in all the ARINC424-18 messages
 
+package Arinc424;
+
 message Base {
   // Record type is S/T (standard/tailored).
   required bool record_type_is_standard = 1;

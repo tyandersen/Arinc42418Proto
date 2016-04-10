@@ -2,7 +2,7 @@ syntax = "proto2";
 
 // ARINV 424-18 compatible ProtocolMessages.
 
-import "LatLong.proto";
+package Arinc424;
 import "Base.proto";
 
 message Airway { // 4.1.6.1 (ER)
