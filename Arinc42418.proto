@@ -11,10 +11,22 @@ import "VHFNavaid.proto";
 import "Airway.proto";
 import "Airport.proto";
 
-message Arinc42418 {
+message AirportFile {
   repeated Airport airport = 1;
-  repeated Airway airway = 2;
-  repeated Waypoint waypoint = 3;
-  repeated NDB ndb = 4;
-  repeated VHFNavaid vhf_navaid = 5;
+}
+
+message AirwayFile {
+  repeated Airway airway = 1;
+}
+
+message WaypointFile {
+  repeated Waypoint waypoint = 1;
+}
+
+message NDBFile {
+  repeated NDB ndb = 1;
+}
+
+message VHFNavaidFile {
+  repeated VHFNavaid vhf_navaid = 1;
 }
